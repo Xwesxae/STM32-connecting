@@ -79,7 +79,6 @@ def handle_client(client_socket, address):
             del clients[client_id]
         client_socket.close()
         print(f"🔌 CLIENT DISCONNECTED: {client_id}")
-```
 # Start server
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('0.0.0.0', 8080))
@@ -190,6 +189,8 @@ except ConnectionRefusedError:
     print("❌ SERVER NOT RUNNING! START MAIN.PY FIRST")
 except Exception as e:
     print(f"❌ ERROR: {e}")
+
+
 🚀 Запуск системы
 1. Запуск сервера
 bash
