@@ -1,27 +1,24 @@
-#!/bin/bash
+# 🚀 STM32 Manager с SQLite базой данных
 
-echo "=================================================="
-echo "🚀 ИНСТРУКЦИЯ ПО ЗАПУСКУ STM32 MANAGER С SQLITE"
-echo "=================================================="
+## 📁 Структура проекта
 
-echo ""
-echo "📁 СТРУКТУРА ПРОЕКТА"
-echo "=================================================="
-echo "trefi/"
-echo "├── python_server/          # Python серверная часть"
-echo "│   ├── main.py            # Главный файл сервера"
-echo "│   ├── test_client.py     # Тестовый клиент"
-echo "│   └── stm32_data.db      # База данных (создается автоматически)"
-echo "├── src/"
-echo "│   └── main.c             # Код для STM32"
-echo "└── platformio.ini         # Конфигурация PlatformIO"
-echo ""
+trefi/
+├── python_server/ # Python серверная часть
+│ ├── main.py # Главный файл сервера
+│ ├── test_client.py # Тестовый клиент
+│ └── stm32_data.db # База данных (создается автоматически)
+├── src/
+│ └── main.c # Код для STM32
+└── platformio.ini # Конфигурация PlatformIO
 
-echo "🛠️  СОЗДАНИЕ ФАЙЛОВ"
-echo "=================================================="
 
-echo "📄 Создаем main.py..."
-cat > main.py << 'EOF'
+
+## 🛠️ Быстрая установка
+
+### 1. Создание файлов сервера
+
+**main.py:**
+```python
 # -*- coding: utf-8 -*-
 import socket
 import sqlite3
@@ -149,116 +146,40 @@ finally:
     server_socket.close()
     conn.close()
     print("✅ SERVER STOPPED")
-EOF
+```
 
-echo "✅ MAIN.PY CREATED"
 
-echo ""
-echo "📄 Создаем test_client.py..."
-cat > test_client.py << 'EOF'
-# -*- coding: utf-8 -*-
-import socket
-import time
-import random
+🚀 Запуск системы
+1. Запуск сервера
+bash
+cd python_server
+python main.py
+2. Тестирование (в новом терминале)
+bash
+cd python_server
+python test_client.py
+📊 Формат данных от STM32
+text
+SENSOR:TEMPERATURE:25.5
+SENSOR:HUMIDITY:60.2
+SENSOR:PRESSURE:1013.25
+SENSOR:VOLTAGE:3.3
+⚙️ Конфигурация STM32
+platformio.ini:
 
-print("🧪 TEST CLIENT")
-
-try:
-    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect(('localhost', 8080))
-    
-    print("✅ CONNECTED TO SERVER!")
-
-    for i in range(3):
-        # Генерируем тестовые данные
-        temp = 20 + random.random() * 10
-        hum = 40 + random.random() * 30
-        
-        try:
-            # Отправляем температуру
-            message1 = f"SENSOR:TEMPERATURE:{temp:.1f}\n"
-            client.send(message1.encode())
-            print(f"📤 SENT: {message1.strip()}")
-            time.sleep(0.5)
-            
-            # Отправляем влажность
-            message2 = f"SENSOR:HUMIDITY:{hum:.1f}\n"
-            client.send(message2.encode())
-            print(f"📤 SENT: {message2.strip()}")
-            time.sleep(1)
-            
-        except (BrokenPipeError, ConnectionAbortedError, ConnectionResetError):
-            print("❌ CONNECTION LOST")
-            break
-            
-    client.close()
-    print("✅ TEST COMPLETED!")
-    
-except ConnectionRefusedError:
-    print("❌ SERVER NOT RUNNING! START MAIN.PY FIRST")
-except Exception as e:
-    print(f"❌ ERROR: {e}")
-EOF
-
-echo "✅ TEST_CLIENT.PY CREATED"
-
-echo ""
-echo "🚀 ИНСТРУКЦИЯ ПО ЗАПУСКУ"
-echo "=================================================="
-
-echo ""
-echo "1️⃣  ЗАПУСК СЕРВЕРА:"
-echo "----------------------------------------"
-echo "cd python_server"
-echo "python main.py"
-echo ""
-
-echo "2️⃣  ТЕСТИРОВАНИЕ СИСТЕМЫ:"
-echo "----------------------------------------"
-echo "📝 ОТКРОЙТЕ НОВЫЙ ТЕРМИНАЛ И ВЫПОЛНИТЕ:"
-echo "cd python_server"
-echo "python test_client.py"
-echo ""
-
-echo "3️⃣  ПРОВЕРКА РАБОТЫ:"
-echo "----------------------------------------"
-echo "📊 В ОКНЕ СЕРВЕРА НАЖМИТЕ '1' ДЛЯ ПРОСМОТРА ДАННЫХ"
-echo "🔌 В ОКНЕ СЕРВЕРА НАЖМИТЕ '2' ДЛЯ ПРОСМОТРА КЛИЕНТОВ"
-echo ""
-
-echo "4️⃣  ФОРМАТ ДАННЫХ ДЛЯ STM32:"
-echo "----------------------------------------"
-echo "SENSOR:TEMPERATURE:25.5"
-echo "SENSOR:HUMIDITY:60.2" 
-echo "SENSOR:PRESSURE:1013.25"
-echo "SENSOR:VOLTAGE:3.3"
-echo ""
-
-echo "5️⃣  ДЛЯ STM32 (PLATFORMIO.INI):"
-echo "----------------------------------------"
-cat > platformio_ini_example.txt << 'EOF'
+ini
 [env:bluepill_f103c8]
 platform = ststm32
 board = bluepill_f103c8
 framework = stm32cube
 build_flags = -D STM32F103xB
-EOF
+✅ Возможности системы
+✅ Прием данных от STM32 по сети
 
-echo "6️⃣  УСТРАНЕНИЕ ПРОБЛЕМ:"
-echo "----------------------------------------"
-echo "❌ ЕСЛИ ОШИБКА КОДИРОВКИ:"
-echo "   - СОХРАНИТЕ ФАЙЛЫ В UTF-8"
-echo "   - ДОБАВЬТЕ # -*- coding: utf-8 -*- В НАЧАЛО"
-echo ""
-echo "❌ ЕСЛИ ПОРТ ЗАНЯТ:"
-echo "   - ИЗМЕНИТЕ ПОРТ 8080 НА ДРУГОЙ В MAIN.PY"
-echo ""
-echo "❌ ЕСЛИ КЛИЕНТ НЕ ПОДКЛЮЧАЕТСЯ:"
-echo "   - УБЕДИТЕСЬ ЧТО СЕРВЕР ЗАПУЩЕН"
-echo "   - ИСПОЛЬЗУЙТЕ localhost ИЛИ 127.0.0.1"
-echo ""
+✅ Сохранение в SQLite базу (дата, адрес, тип сенсора, значение)
 
-echo "=================================================="
-echo "✅ СИСТЕМА ГОТОВА К ИСПОЛЬЗОВАНИЮ!"
-echo "📊 ДАННЫЕ АВТОМАТИЧЕСКИ СОХРАНЯЮТСЯ В SQLITE"
-echo "=================================================="
+✅ Просмотр истории данных
+
+✅ Многопоточная обработка подключений
+
+✅ Консольное управление
