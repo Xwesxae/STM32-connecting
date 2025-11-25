@@ -147,6 +147,9 @@ finally:
     conn.close()
     print("✅ SERVER STOPPED")
 ```
+![ПОДКЛЮЧЕНИЕ](подключены.png)
+
+
 
 **test_client.py:**
 ```python
