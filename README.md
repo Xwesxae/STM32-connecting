@@ -189,7 +189,7 @@ except ConnectionRefusedError:
     print("❌ SERVER NOT RUNNING! START MAIN.PY FIRST")
 except Exception as e:
     print(f"❌ ERROR: {e}")
-
+```
 
 🚀 Запуск системы
 1. Запуск сервера
