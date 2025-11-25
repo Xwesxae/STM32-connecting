@@ -3,14 +3,14 @@
 ## 📁 Структура проекта
 
 trefi/
-├── python_server/ # Python серверная часть
-│ ├── main.py # Главный файл сервера
-│ ├── test_client.py # Тестовый клиент
-│ └── stm32_data.db # База данных (создается автоматически)
-├── src/
-│ └── main.c # Код для STM32
-└── platformio.ini # Конфигурация PlatformIO
-
+  ├── python_server/ # Python серверная часть
+  │ ├── main.py # Главный файл сервера
+  │ ├── test_client.py # Тестовый клиент
+  │ └── stm32_data.db # База данных (создается автоматически)
+  ├── src/
+  │ └── main.c # Код для STM32
+  └── platformio.ini # Конфигурация PlatformIO
+ 
 
 
 ## 🛠️ Быстрая установка
